@@ -7,14 +7,13 @@ export class MailtrapMailProvider implements IMailProvider {
 	constructor(){
 		this.transport = nodemailer.createTransport({
 			host: "smtp.mailtrap.io",
-			port: 465,
+			port: 2525,
 			auth: {
-				user: "9df3331432155d",
-				pass: "724a19a2ad7b3f"
-			},
+				user: "c29f893977c501",
+				pass: "f0a8e5462e753f"
+			}
 		});
 	}
-
 	async sendMail(message: IMessage): Promise<void> {
 		await this.transport.sendMail({
 			to: {
