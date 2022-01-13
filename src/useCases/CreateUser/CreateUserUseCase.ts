@@ -1,10 +1,14 @@
 import { User } from "../../entities/User";
+import { IMailProvider } from "../../providers/IMailProvider";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 import { ICreateUserRequestDTO } from "./CreateUserDTO";
 
-export class CreateUserCase {
-  
-	constructor(private usersRepository: IUsersRepository) {}
+export class CreateUserUseCase {
+
+	constructor(
+    private usersRepository: IUsersRepository,
+    private mailProvider: IMailProvider
+	) {}
 
 	async execute(data: ICreateUserRequestDTO) {
 
@@ -18,5 +22,17 @@ export class CreateUserCase {
 
 		await this.usersRepository.save(user);
 
+		await this.mailProvider.sendMail({
+			to: {
+				name: data.name,
+				email: data.email,
+			},
+			from: {
+				name: "Equipe Felix Tec",
+				email: "felixrochaeso@gmail.com"
+			},
+			subject: "Seja Bem-vindo",
+			body: "<p>Agora você faz parte da maior empresa de tecnologia do país.</p>"
+		});
 	}
 }
